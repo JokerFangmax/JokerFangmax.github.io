@@ -1,0 +1,53 @@
+{{ if eq .Type "post" }}
+<script type="module">
+  import { Transformer } from 'https://cdn.jsdelivr.net/npm/markmap-lib@0.18.12/+esm';
+  import { Markmap } from 'https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/+esm';
+
+  const shell = document.querySelector('.js-post-markmap-shell');
+  const svg = document.querySelector('.js-post-markmap');
+  const article = document.querySelector('.article-style');
+
+  if (shell && svg && article) {
+    const title = shell.dataset.title || document.title || 'Mindmap';
+    const headings = Array.from(article.querySelectorAll('h2, h3, h4'));
+
+    if (headings.length < 2) {
+      shell.classList.add('is-hidden');
+    } else {
+      const slugify = (value) =>
+        value
+          .toLowerCase()
+          .trim()
+          .replace(/[^\w\u4e00-\u9fff\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
+
+      const escapeMarkdown = (value) =>
+        value.replace(/([\[\]\(\)])/g, '\\$1').trim();
+
+      const markdownLines = [`# [${escapeMarkdown(title)}](#post-top)`];
+
+      headings.forEach((heading) => {
+        if (!heading.id) {
+          heading.id = slugify(heading.textContent || 'section');
+        }
+        const level = Math.min(Math.max(Number(heading.tagName.slice(1)) - 1, 2), 4);
+        const prefix = '#'.repeat(level);
+        const label = escapeMarkdown((heading.textContent || '').replace(/\s+/g, ' '));
+        markdownLines.push(`${prefix} [${label}](#${heading.id})`);
+      });
+
+      const transformer = new Transformer();
+      const { root } = transformer.transform(markdownLines.join('\n'));
+
+      Markmap.create(svg, {
+        autoFit: true,
+        duration: 300,
+        maxWidth: 360,
+        initialExpandLevel: 1,
+        colorFreezeLevel: 2
+      }, root);
+    }
+  }
+</script>
+{{ end }}

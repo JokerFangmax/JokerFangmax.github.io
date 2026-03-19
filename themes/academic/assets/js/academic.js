@@ -470,6 +470,11 @@
       if (diagramEnabled) {
         if (init) {
           mermaid.initialize({theme: 'default', securityLevel: 'loose'});
+          if (typeof mermaid.run === 'function') {
+            mermaid.run({querySelector: '.mermaid'});
+          } else if (typeof mermaid.init === 'function') {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+          }
         } else {
           // Have to reload to re-initialise Mermaid with the new theme and re-parse the Mermaid code blocks.
           location.reload();
@@ -488,6 +493,11 @@
       if (diagramEnabled) {
         if (init) {
           mermaid.initialize({theme: 'dark', securityLevel: 'loose'});
+          if (typeof mermaid.run === 'function') {
+            mermaid.run({querySelector: '.mermaid'});
+          } else if (typeof mermaid.init === 'function') {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+          }
         } else {
           // Have to reload to re-initialise Mermaid with the new theme and re-parse the Mermaid code blocks.
           location.reload();

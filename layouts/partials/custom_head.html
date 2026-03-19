@@ -1,0 +1,58 @@
+{{ if eq .Type "post" }}
+<style>
+  .post-markmap-shell {
+    margin: 0 0 2.5rem;
+    padding: 1.25rem 1.25rem 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(41, 98, 255, 0.05), rgba(41, 98, 255, 0.015));
+  }
+
+  .post-markmap-header h2 {
+    margin-bottom: 0.4rem;
+    font-size: 1.2rem;
+  }
+
+  .post-markmap-header p {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .post-markmap-canvas {
+    height: 560px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .post-markmap-canvas svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .post-markmap-shell.is-hidden {
+    display: none;
+  }
+
+  .dark .post-markmap-shell {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+  }
+
+  .dark .post-markmap-header p {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .dark .post-markmap-canvas {
+    background: rgba(40, 42, 54, 0.9);
+  }
+
+  @media (max-width: 768px) {
+    .post-markmap-canvas {
+      height: 420px;
+    }
+  }
+</style>
+{{ end }}

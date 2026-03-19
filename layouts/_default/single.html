@@ -1,0 +1,29 @@
+{{- define "main" -}}
+
+<article class="article">
+
+  {{ partial "page_header" . }}
+
+  <div class="article-container">
+    {{ if eq .Type "post" }}
+    <section class="post-markmap-shell js-post-markmap-shell" data-title="{{ .Title }}">
+      <div class="post-markmap-header">
+        <h2>Interactive Mindmap</h2>
+        <p>Drag to pan, scroll to zoom, and click a node to jump to that section.</p>
+      </div>
+      <div class="post-markmap-canvas">
+        <svg class="js-post-markmap"></svg>
+      </div>
+    </section>
+    {{ end }}
+
+    <div class="article-style" id="post-top">
+      {{ .Content }}
+    </div>
+
+    {{ partial "page_footer" . }}
+
+  </div>
+</article>
+
+{{- end -}}
