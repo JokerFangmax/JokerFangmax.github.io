@@ -4,25 +4,64 @@
 
   {{ partial "page_header" . }}
 
-  <div class="article-container">
+  <div class="article-container {{ if eq .Type "post" }}post-layout-container{{ end }}">
     {{ if eq .Type "post" }}
-    <section class="post-markmap-shell js-post-markmap-shell" data-title="{{ .Title }}">
-      <div class="post-markmap-header">
-        <h2>Interactive Mindmap</h2>
-        <p>Drag to pan, scroll to zoom, and click a node to jump to that section.</p>
-      </div>
-      <div class="post-markmap-canvas">
-        <svg class="js-post-markmap"></svg>
-      </div>
-    </section>
-    {{ end }}
+    <div class="post-layout-shell">
+      <div class="post-layout-main">
+        <div class="article-style" id="post-top">
+          {{ .Content }}
+        </div>
 
+        {{ partial "page_footer" . }}
+      </div>
+
+      <aside class="post-layout-aside">
+        <section class="post-section-nav js-post-reading-progress js-post-section-nav" aria-label="Section navigation">
+          <div class="post-reading-progress-inner">
+            <div class="post-reading-progress-bar">
+              <span class="post-reading-progress-fill js-post-reading-progress-fill"></span>
+            </div>
+            <div class="post-reading-progress-meta">
+              <span class="post-reading-progress-chip js-post-progress-percent">0%</span>
+              <span class="post-reading-progress-current js-post-progress-current">Opening section</span>
+              <span class="post-reading-progress-neighbors">
+                <span class="js-post-progress-prev">Start</span>
+                <span class="post-reading-progress-separator">/</span>
+                <span class="js-post-progress-next">End</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- <div class="post-aside-header">
+            <div>
+              <h2>Section Navigator</h2>
+              <p>Track where you are and jump directly to the part you want.</p>
+            </div>
+          </div> -->
+          <!-- <nav class="post-section-nav-list js-post-section-nav-list"></nav> -->
+        </section>
+
+        <section class="post-markmap-shell js-post-markmap-shell" data-title="{{ .Title }}">
+          <div class="post-aside-header post-markmap-header-row">
+            <div>
+              <h2>Interactive Mindmap</h2>
+              <!-- <p>Drag to pan, scroll  to zoom, and click a node to jump to that section.</p> -->
+            </div>
+            <button type="button" class="post-markmap-toggle js-post-markmap-toggle" aria-expanded="true">Collapse</button>
+          </div>
+          <div class="post-markmap-canvas js-post-markmap-canvas">
+            <svg class="js-post-markmap"></svg>
+          </div>
+        </section>
+      </aside>
+    </div>
+    {{ else }}
     <div class="article-style" id="post-top">
       {{ .Content }}
     </div>
 
     {{ partial "page_footer" . }}
-
+    {{ end }}
   </div>
 </article>
 

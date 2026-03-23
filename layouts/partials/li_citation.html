@@ -1,0 +1,33 @@
+{{ $image := .Resources.GetMatch "featured*" }}
+<div class="pub-list-item pub-list-item--rich">
+  {{ with $image }}
+    <a class="pub-list-thumb" href="{{ $.RelPermalink }}" aria-label="{{ $.Title }}">
+      <img src="{{ .RelPermalink }}" alt="Thumbnail for {{ $.Title }}">
+    </a>
+  {{ end }}
+
+  <div class="pub-list-content">
+    <h3 class="pub-list-title">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </h3>
+    
+    <div class="article-metadata li-cite-author pub-list-authors">
+      {{ partial "page_metadata_authors" . }}
+    </div>
+
+    <div class="pub-list-venue">
+      {{ if .Params.publication_short }}
+        {{- .Params.publication_short | markdownify -}}
+      {{ else if .Params.publication }}
+        {{- .Params.publication | markdownify -}}
+      {{ end }}
+      <span class="pub-list-year">{{ .Date.Format "2006" }}</span>
+    </div>
+
+    <!-- {{ with .Params.abstract }}
+      <p class="pub-list-abstract">{{ . }}</p>
+    {{ end }} -->
+
+    <p class="pub-list-links">{{ partial "page_links" (dict "page" . "is_list" 1) }}</p>
+  </div>
+</div>

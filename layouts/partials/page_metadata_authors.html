@@ -1,0 +1,27 @@
+{{/* Project-level override for author list rendering with optional highlight_authors support. */}}
+
+{{- $taxonomy := "authors" -}}
+{{- $highlighted := .Params.highlight_authors | default (slice) -}}
+{{- $link_authors := site.Params.link_authors | default true -}}
+
+{{ with .Param $taxonomy }}
+  {{ range $index, $name_raw := . }}
+    {{- $name_key := printf "%v" $name_raw -}}
+    {{- $profile_page := site.GetPage (printf "/%s/%s" $taxonomy $name_key) -}}
+    {{- $name := $profile_page.Title | default $name_key -}}
+    {{- if gt $index 0 }}, {{ end -}}
+    {{- $is_highlighted := or (in $highlighted $name_key) (in $highlighted $name) -}}
+    <span class="{{ if $is_highlighted }}pub-author-highlight{{ end }}">
+      {{- if and $profile_page $link_authors -}}
+        <a href="{{$profile_page.RelPermalink}}">{{$name}}</a>
+      {{- else -}}
+        {{$name}}
+      {{- end -}}
+    </span>
+    {{- if isset $.Params "author_notes" -}}
+      {{- with (index $.Params.author_notes $index) -}}
+        <span title="{{.}}" class="author-notes">(?)</span>
+      {{- end -}}
+    {{- end -}}
+  {{ end }}
+{{ end }}

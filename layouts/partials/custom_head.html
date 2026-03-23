@@ -1,29 +1,240 @@
-{{ if eq .Type "post" }}
+{{ if or (eq .Type "post") (eq .Type "publication") }}
 <style>
+  .post-layout-container {
+    max-width: 1280px;
+  }
+
+  .post-layout-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .post-layout-main {
+    min-width: 0;
+  }
+
+  .post-layout-main .article-style h2,
+  .post-layout-main .article-style h3,
+  .post-layout-main .article-style h4 {
+    scroll-margin-top: 96px;
+    transition: color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .post-layout-main .article-style .is-current-section {
+    color: #0f62fe;
+  }
+
+  .post-layout-main .article-style .is-current-section::before {
+    content: "";
+    display: inline-block;
+    width: 0.55rem;
+    height: 0.55rem;
+    margin-right: 0.5rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #2962ff, #00a7c4);
+    vertical-align: middle;
+    box-shadow: 0 0 0 6px rgba(41, 98, 255, 0.12);
+  }
+
+  .post-layout-aside {
+    position: sticky;
+    top: 88px;
+    display: grid;
+    gap: 1rem;
+    align-self: start;
+  }
+
+  .post-section-nav,
   .post-markmap-shell {
-    margin: 0 0 2.5rem;
-    padding: 1.25rem 1.25rem 0.75rem;
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 18px;
-    background: linear-gradient(180deg, rgba(41, 98, 255, 0.05), rgba(41, 98, 255, 0.015));
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   }
 
-  .post-markmap-header h2 {
-    margin-bottom: 0.4rem;
-    font-size: 1.2rem;
+  .post-reading-progress-inner {
+    padding: 0.9rem 1rem 0.1rem;
   }
 
-  .post-markmap-header p {
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
+  .post-aside-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.85rem 1rem 0;
+  }
+
+  .post-aside-header h2 {
+    margin: 0 0 0.3rem;
+    font-size: 1.02rem;
+  }
+
+  .post-aside-header p {
+    margin: 0;
+    font-size: 0.88rem;
     color: rgba(0, 0, 0, 0.6);
   }
 
+  .post-reading-progress-bar {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+  }
+
+  .post-reading-progress-fill {
+    display: block;
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #2962ff, #00a7c4);
+    transition: width 120ms ease-out;
+  }
+
+  .post-reading-progress-meta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.7rem 0.85rem;
+    align-items: center;
+    margin-top: 0.8rem;
+  }
+
+  .post-reading-progress-chip {
+    min-width: 3.2rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(41, 98, 255, 0.1);
+    color: #1746c7;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .post-reading-progress-current {
+    min-width: 0;
+    font-weight: 700;
+    color: rgba(15, 23, 42, 0.9);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .post-reading-progress-neighbors {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: rgba(15, 23, 42, 0.58);
+    font-size: 0.9rem;
+  }
+
+  .post-reading-progress-neighbors > span {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .post-reading-progress-separator {
+    display: none;
+  }
+
+  .post-section-nav-list {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.8rem 0.65rem 0.8rem 0.75rem;
+    max-height: 30vh;
+    overflow: auto;
+  }
+
+  .post-section-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 12px;
+    color: rgba(15, 23, 42, 0.78);
+    text-decoration: none;
+    transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+  }
+
+  .post-section-nav-item:hover {
+    background: rgba(41, 98, 255, 0.08);
+    color: #0f62fe;
+    text-decoration: none;
+    transform: translateX(2px);
+  }
+
+  .post-section-nav-item.is-active {
+    background: rgba(41, 98, 255, 0.12);
+    color: #0f62fe;
+    font-weight: 700;
+  }
+
+  .post-section-nav-item[data-level="3"] {
+    margin-left: 0.8rem;
+    font-size: 0.94rem;
+  }
+
+  .post-section-nav-item[data-level="4"] {
+    margin-left: 1.45rem;
+    font-size: 0.9rem;
+  }
+
+  .post-section-nav-bullet {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.25);
+    flex: 0 0 auto;
+  }
+
+  .post-section-nav-item.is-active .post-section-nav-bullet {
+    background: linear-gradient(135deg, #2962ff, #00a7c4);
+    box-shadow: 0 0 0 5px rgba(41, 98, 255, 0.12);
+  }
+
+  .post-markmap-shell {
+    background: linear-gradient(180deg, rgba(41, 98, 255, 0.05), rgba(41, 98, 255, 0.015));
+  }
+
+  .post-markmap-header-row {
+    align-items: center;
+  }
+
+  .post-markmap-toggle {
+    flex: 0 0 auto;
+    padding: 0.38rem 0.72rem;
+    border: 1px solid rgba(41, 98, 255, 0.16);
+    border-radius: 999px;
+    background: rgba(41, 98, 255, 0.08);
+    color: #1746c7;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .post-markmap-toggle:hover {
+    background: rgba(41, 98, 255, 0.14);
+  }
+
   .post-markmap-canvas {
-    height: 560px;
+    height: min(68vh, 680px);
+    margin: 0.9rem 1rem 1rem;
     overflow: hidden;
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.82);
+    transition: height 180ms ease, margin 180ms ease, opacity 180ms ease;
+  }
+
+  .post-markmap-shell.is-collapsed .post-markmap-canvas {
+    height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
   }
 
   .post-markmap-canvas svg {
@@ -36,22 +247,260 @@
     display: none;
   }
 
-  .dark .post-markmap-shell {
-    border-color: rgba(255, 255, 255, 0.08);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+  .js-post-markmap .markmap-node {
+    transition: opacity 160ms ease;
   }
 
-  .dark .post-markmap-header p {
-    color: rgba(255, 255, 255, 0.7);
+  .js-post-markmap.has-active-node .markmap-node {
+    opacity: 0.38;
+  }
+
+  .js-post-markmap.has-active-node .markmap-node.is-active,
+  .js-post-markmap.has-active-node .markmap-node.is-active-parent {
+    opacity: 1;
+  }
+
+  .js-post-markmap .markmap-node.is-active > circle,
+  .js-post-markmap .markmap-node.is-active > line,
+  .js-post-markmap .markmap-node.is-active > path,
+  .js-post-markmap .markmap-node.is-active-parent > circle,
+  .js-post-markmap .markmap-node.is-active-parent > line,
+  .js-post-markmap .markmap-node.is-active-parent > path {
+    stroke: #0f62fe !important;
+    stroke-width: 2.5px !important;
+  }
+
+  .js-post-markmap .markmap-node.is-active foreignObject,
+  .js-post-markmap .markmap-node.is-active text,
+  .js-post-markmap .markmap-node.is-active a {
+    font-weight: 700;
+    color: #0f62fe !important;
+    fill: #0f62fe !important;
+  }
+
+  .js-post-markmap .markmap-node.is-active-parent foreignObject,
+  .js-post-markmap .markmap-node.is-active-parent text,
+  .js-post-markmap .markmap-node.is-active-parent a {
+    color: rgba(15, 23, 42, 0.88) !important;
+    fill: rgba(15, 23, 42, 0.88) !important;
+  }
+
+  .pub-list-item--rich {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .pub-list-thumb {
+    flex: 0 0 190px;
+    max-width: 190px;
+    display: block;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .pub-list-thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .pub-list-content {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .pub-list-authors {
+    margin-bottom: 0.35rem;
+    line-height: 1.7;
+    color: rgba(0, 0, 0, 0.72);
+  }
+
+  .pub-list-title {
+    margin: 0 0 0.35rem;
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+
+  .pub-list-title a {
+    color: inherit;
+  }
+
+  .pub-list-venue {
+    margin-bottom: 0.6rem;
+    font-size: 0.98rem;
+    color: rgba(0, 0, 0, 0.68);
+  }
+
+  .pub-list-year {
+    margin-left: 0.55rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.82);
+  }
+
+  .pub-list-abstract {
+    margin-bottom: 0.8rem;
+    color: rgba(0, 0, 0, 0.78);
+    line-height: 1.7;
+  }
+
+  .pub-list-links {
+    margin-bottom: 0;
+  }
+
+  .pub-author-highlight,
+  .pub-author-highlight a {
+    font-weight: 800;
+    color: #111;
+  }
+
+  .dark .post-layout-main .article-style .is-current-section {
+    color: #9cc3ff;
+  }
+
+  .dark .post-layout-main .article-style .is-current-section::before,
+  .dark .post-section-nav-item.is-active .post-section-nav-bullet {
+    box-shadow: 0 0 0 6px rgba(156, 195, 255, 0.18);
+  }
+
+  .dark .post-section-nav,
+  .dark .post-markmap-shell {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(25, 27, 31, 0.9);
+    box-shadow: none;
+  }
+
+  .dark .post-reading-progress-bar {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .dark .post-reading-progress-chip,
+  .dark .post-markmap-toggle {
+    background: rgba(113, 169, 255, 0.15);
+    color: #9cc3ff;
+    border-color: rgba(156, 195, 255, 0.18);
+  }
+
+  .dark .post-reading-progress-current,
+  .dark .post-section-nav-item.is-active,
+  .dark .pub-list-year,
+  .dark .pub-author-highlight,
+  .dark .pub-author-highlight a,
+  .dark .js-post-markmap .markmap-node.is-active foreignObject,
+  .dark .js-post-markmap .markmap-node.is-active text,
+  .dark .js-post-markmap .markmap-node.is-active a {
+    color: #fff;
+    fill: #9cc3ff !important;
+  }
+
+  .dark .post-reading-progress-neighbors,
+  .dark .post-aside-header p,
+  .dark .post-section-nav-item,
+  .dark .pub-list-authors,
+  .dark .pub-list-venue,
+  .dark .pub-list-abstract,
+  .dark .js-post-markmap .markmap-node.is-active-parent foreignObject,
+  .dark .js-post-markmap .markmap-node.is-active-parent text,
+  .dark .js-post-markmap .markmap-node.is-active-parent a {
+    color: rgba(255, 255, 255, 0.72) !important;
+    fill: rgba(255, 255, 255, 0.72) !important;
+  }
+
+  .dark .post-section-nav-item:hover {
+    background: rgba(156, 195, 255, 0.12);
+    color: #9cc3ff;
+  }
+
+  .dark .post-section-nav-bullet {
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .dark .post-markmap-shell {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
   }
 
   .dark .post-markmap-canvas {
     background: rgba(40, 42, 54, 0.9);
   }
 
-  @media (max-width: 768px) {
+  .dark .js-post-markmap .markmap-node.is-active > circle,
+  .dark .js-post-markmap .markmap-node.is-active > line,
+  .dark .js-post-markmap .markmap-node.is-active > path,
+  .dark .js-post-markmap .markmap-node.is-active-parent > circle,
+  .dark .js-post-markmap .markmap-node.is-active-parent > line,
+  .dark .js-post-markmap .markmap-node.is-active-parent > path {
+    stroke: #9cc3ff !important;
+  }
+
+  .dark .pub-list-thumb {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: none;
+  }
+
+  @media (max-width: 1100px) {
+    .post-layout-shell {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+
+    .post-layout-aside {
+      position: static;
+      order: -1;
+    }
+
+    .post-section-nav-list {
+      max-height: none;
+    }
+
     .post-markmap-canvas {
       height: 420px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .post-section-nav,
+    .post-markmap-shell {
+      backdrop-filter: none;
+    }
+
+    .post-reading-progress-inner {
+      padding: 0.8rem 0.85rem 0.1rem;
+    }
+
+    .post-reading-progress-meta {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+
+    .post-reading-progress-neighbors {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .post-aside-header {
+      padding: 0.9rem 0.9rem 0;
+    }
+
+    .post-markmap-canvas {
+      margin: 0.8rem 0.9rem 0.9rem;
+    }
+
+    .pub-list-item--rich {
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .pub-list-thumb {
+      max-width: 100%;
+      width: min(100%, 280px);
+      flex-basis: auto;
     }
   }
 </style>
