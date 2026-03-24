@@ -103,6 +103,8 @@ $
 
 其中 $\alpha_i$ 表示 query 对第 $i$ 个 value 的注意力权重。
 
+***详细解释QKV的计算流程，以及为什么除以根号d可以保持QK的方差稳定***
+
 ### 2.2.3 Query / Key / Value 的直观理解
 
 可以把它理解成一个检索过程：
@@ -140,7 +142,7 @@ attention map 可以展示模型在当前时刻重点关注了哪些位置，因
 ### 2.3.1 为什么需要 Self-Attention
 
 前面的 attention 更多是指 decoder 去关注 encoder 的输出。  
-但如果我们想用 attention 完全替代 RNN(***即把QKV那一套用在Encoder和Decoder内部，现在更多的是Decoder到Encoder，而两部分实际还是RNN***)，仅仅建模“输入和输出之间的关系”还不够，还需要建模：
+但如果我们想用 attention 完全替代 RNN(***即把QKV那一套用在Encoder和Decoder内部，现在更多的是Decoder的Q到Encoder的KV，而两部分实际还是RNN***)，仅仅建模“输入和输出之间的关系”还不够，还需要建模：
 
 - 输入句子内部 token 之间的关系
 - 输出句子内部 token 之间的关系
