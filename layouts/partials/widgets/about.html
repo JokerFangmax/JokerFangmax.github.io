@@ -7,6 +7,9 @@
 {{ else }}
   {{ $author = $page.Params.author }}
 {{end}}
+{{ if not $author }}
+  {{ $author = $.Scratch.Get "superuser_username" }}
+{{ end }}
 
 {{ $person_page_path := (printf "/authors/%s" $author) }}
 {{ $person_page := site.GetPage $person_page_path }}
