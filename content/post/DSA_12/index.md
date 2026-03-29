@@ -30,7 +30,7 @@ description: "DSA CHAP12"
 - 输入法中的词频调整
 - 排序算法
 - 贪心算法（如 Huffman 编码、Kruskal）
-- 平面扫描算法中的事件队列 fileciteturn14file0
+- 平面扫描算法中的事件队列 
 
 这些场景有一个共同点：
 
@@ -40,7 +40,7 @@ description: "DSA CHAP12"
 
 1. 集合组成是动态变化的  
    也就是元素会不断插入、删除
-2. 元素优先级本身也可能动态变化 fileciteturn14file0
+2. 元素优先级本身也可能动态变化 
 
 所以问题不是“静态求一次最大值”，而是：
 
@@ -50,7 +50,7 @@ description: "DSA CHAP12"
 
 ### 1.2 PQ 的抽象接口
 
-课件第 3 页给出 PQ 作为 ADT 的典型接口：fileciteturn14file0
+课件第 3 页给出 PQ 作为 ADT 的典型接口：
 
 ```cpp
 template <typename T> struct PQ { // priority queue
@@ -77,7 +77,7 @@ template <typename T> struct PQ { // priority queue
 课件第 3 页指出：
 
 - Stack 和 Queue 都是 PQ 的特例，因为优先级完全由插入次序决定
-- Steap 和 Queap 也是 PQ 的特例，只是插入、删除位置受限 fileciteturn14file0
+- Steap 和 Queap 也是 PQ 的特例，只是插入、删除位置受限 
 
 这说明：
 
@@ -94,16 +94,16 @@ template <typename T> struct PQ { // priority queue
 
 ## 2. 朴素实现：为什么有序结构未必划算
 
-课件第 5～9 页先系统比较了几种直接实现方式。fileciteturn14file0  
+课件第 5～9 页先系统比较了几种直接实现方式。  
 这一部分非常重要，因为它解释了为什么我们最终会走向“堆”。
 
 ---
 
 ## 2.1 基于无序向量（Vector）
 
-课件第 5 页给出的复杂度是：fileciteturn14file0
+课件第 5 页给出的复杂度是：
 
-- `getMax()`：遍历整个向量，`Θ(n)`
+- `getMax()`：遍历整个向量，`Θ(n)`  ***为什么用θ***
 - `delMax()`：先遍历找最大，再删除，`Θ(n)`
 - `insert()`：直接尾插，`O(1)`
 
@@ -128,7 +128,7 @@ template <typename T> struct PQ { // priority queue
 
 ## 2.2 基于有序向量（Sorted Vector）
 
-课件第 6 页给出的结论是：fileciteturn14file0
+课件第 6 页给出的结论是：
 
 - `getMax()`：直接看末元素，`O(1)`
 - `delMax()`：删除末元素，`O(1)`
@@ -143,7 +143,7 @@ template <typename T> struct PQ { // priority queue
 
 ## 2.3 基于无序列表（List）
 
-课件第 7 页给出的结论：fileciteturn14file0
+课件第 7 页给出的结论：
 
 - `getMax()`：遍历找最大，`Θ(n)`
 - `delMax()`：遍历后删除，`Θ(n)`
@@ -158,7 +158,7 @@ template <typename T> struct PQ { // priority queue
 
 ## 2.4 基于有序列表（Sorted List）
 
-课件第 8 页给出：fileciteturn14file0
+课件第 8 页给出：
 
 - `getMax()`：直接看表头，`O(1)`
 - `delMax()`：删除表头，`O(1)`
@@ -173,14 +173,14 @@ template <typename T> struct PQ { // priority queue
 
 ## 2.5 基于 BBST
 
-课件第 9 页指出：AVL、Splay、Red-Black 三种平衡搜索树都可以做到：fileciteturn14file0
+课件第 9 页指出：AVL、Splay、Red-Black 三种平衡搜索树都可以做到：
 
 - `insert()`：`O(log n)`
 - `getMax()` / `delMax()`：也可做到 `O(log n)` 或其中 `getMax()` 更优
 
 但课件紧接着提出一个非常关键的判断：
 
-> BBST 的功能远远超出了 PQ 的需求。 fileciteturn14file0
+> BBST 的功能远远超出了 PQ 的需求。 
 
 因为 BBST 维护的是：
 
@@ -193,7 +193,7 @@ template <typename T> struct PQ { // priority queue
 
 所以课件总结：
 
-> 若只需查找极值元，则不必维护所有元素之间的全序关系，偏序足矣。 fileciteturn14file0
+> 若只需查找极值元，则不必维护所有元素之间的全序关系，偏序足矣。 
 
 这句话就是“堆”诞生的核心动机。
 
@@ -242,7 +242,7 @@ template <typename T> struct PQ { // priority queue
 课件第 9 页正是基于这一点提出：
 
 > 应该存在某种更简单、维护成本更低的实现方式，  
-> 仍能把各接口做成 `O(log n)`，而且实际效率更高。 fileciteturn14file0
+> 仍能把各接口做成 `O(log n)`，而且实际效率更高。 
 
 这个“更简单的实现方式”，就是**堆（heap）**。
 
@@ -250,13 +250,13 @@ template <typename T> struct PQ { // priority queue
 
 ## 4. 完全二叉堆：结构与堆序性
 
-从课件第 11 页开始，进入本章核心：**完全二叉堆（complete binary heap）**。fileciteturn14file0
+从课件第 11 页开始，进入本章核心：**完全二叉堆（complete binary heap）**。
 
 ---
 
 ## 4.1 为什么选“完全二叉树 + 向量”
 
-课件第 12 页强调完全二叉堆有两个层面：fileciteturn14file0
+课件第 12 页强调完全二叉堆有两个层面：
 
 - **逻辑上**：等同于一棵完全二叉树
 - **物理上**：直接借助向量实现
@@ -272,7 +272,7 @@ template <typename T> struct PQ { // priority queue
 
 ## 4.2 下标关系
 
-课件第 12 页给出三个经典宏：fileciteturn14file0
+课件第 12 页给出三个经典宏：
 
 ```cpp
 #define Parent(i) ( ((i) - 1) >> 1 )
@@ -309,7 +309,7 @@ RChild(i)=2i+2
 
 ## 4.3 什么是堆序性
 
-课件第 14 页给出最大堆的堆序性：fileciteturn14file0
+课件第 14 页给出最大堆的堆序性：
 
 > 只要 `0 < i`，就必满足
 
@@ -362,7 +362,7 @@ O(\log n)
 
 ## 5.1 插入思路
 
-课件第 16～21 页用连环图展示了插入过程：fileciteturn14file0
+课件第 16～21 页用连环图展示了插入过程：
 
 1. 新元素先放到向量末尾  
    这对应完全二叉树的最后一个叶位
@@ -379,7 +379,7 @@ O(\log n)
 
 ## 5.2 插入实现
 
-课件第 22 页给出代码：fileciteturn14file0
+课件第 22 页给出代码：
 
 ```cpp
 template <typename T> void PQ_ComplHeap<T>::insert( T e ) {
@@ -412,7 +412,7 @@ template <typename T> Rank percolateUp( T* A, Rank i ) {
 
 ## 5.3 为什么插入复杂度是 `O(log n)`
 
-课件第 23 页给出理由：fileciteturn14file0
+课件第 23 页给出理由：
 
 - 新元素上滤时，只可能与祖先交换
 - 完全二叉树的祖先数不超过树高
@@ -426,7 +426,7 @@ insert = O(\log n)
 
 不过课件也提醒：
 
-> 数学期望意义下，实际效率往往远远更高。 fileciteturn14file0
+> 数学期望意义下，实际效率往往远远更高。 
 
 因为随机数据下，通常不会真的一路上滤到根。
 
@@ -436,7 +436,7 @@ insert = O(\log n)
 
 ## 6.1 删除最大元的思路
 
-课件第 25～30 页用“割肉补疮 + 逐层下滤”来形容删除：fileciteturn14file0
+课件第 25～30 页用“割肉补疮 + 逐层下滤”来形容删除：
 
 删除堆顶时不能直接把根拿掉后留空，因此标准做法是：
 
@@ -453,7 +453,7 @@ insert = O(\log n)
 
 ## 6.2 删除实现
 
-课件第 31 页给出：fileciteturn14file0
+课件第 31 页给出：
 
 ```cpp
 template <typename T> T PQ_ComplHeap<T>::delMax() {
@@ -488,7 +488,7 @@ template <typename T> Rank percolateDown( T* A, Rank n, Rank i ) {
 
 ## 6.3 为什么删除复杂度也是 `O(log n)`
 
-课件第 32 页总结：fileciteturn14file0
+课件第 32 页总结：
 
 - 新堆顶元素在每一层至多交换一次
 - 可下移的层数不超过堆高
@@ -508,7 +508,7 @@ delMax = O(\log n)
 
 ## 7.1 朴素建堆：逐个插入
 
-课件第 34～36 页先给出一种直观做法：fileciteturn14file0
+课件第 34～36 页先给出一种直观做法：
 
 若数组已有 `n` 个元素，希望把它们变成堆，可按层次遍历顺序逐一做 `percolateUp`：
 
@@ -530,13 +530,13 @@ for ( Rank i = 1; i < n; i++ )
 O(n \log n)
 \]
 
-课件甚至指出：这么长的时间，本足以全排序。fileciteturn14file0
+课件甚至指出：这么长的时间，本足以全排序。
 
 ---
 
 ## 7.2 Floyd 自下而上建堆
 
-课件第 37 页给出 Robert Floyd 1964 的经典算法：fileciteturn14file0
+课件第 37 页给出 Robert Floyd 1964 的经典算法：
 
 ```cpp
 template <typename T>
@@ -560,7 +560,7 @@ void heapify( T* A, Rank n ) {
 
 ## 7.3 为什么是 `O(n)` 而不是 `O(n log n)`
 
-课件第 39 页给出关键直觉：fileciteturn14file0
+课件第 39 页给出关键直觉：
 
 - 不同内部节点下滤的成本，并不都达到 `log n`
 - 越靠近底层的节点，高度越小，所需下滤步数越少
@@ -586,11 +586,11 @@ heapify = O(n)
 
 ## 8. 堆排序（Heap Sort）
 
-从课件第 41 页开始进入堆排序。fileciteturn14file0
+从课件第 41 页开始进入堆排序。
 
 ## 8.1 堆排序的核心不变性
 
-课件第 42 页指出：fileciteturn14file0
+课件第 42 页指出：
 
 在 `selectionSort()` 中，若把无序区 `U` 改造成堆 `H`，则：
 
@@ -610,7 +610,7 @@ O(n) + n 	imes O(\log n) = O(n \log n)
 
 ## 8.2 就地堆排序
 
-课件第 43～44 页进一步指出：fileciteturn14file0
+课件第 43～44 页进一步指出：
 
 完全二叉堆本身就是一个向量区间，  
 因此无需额外开第二个数组来存已排序区。
@@ -623,7 +623,7 @@ O(n) + n 	imes O(\log n) = O(n \log n)
    - 当前区间末元素 `A[n-1]`
 3. 然后把堆规模减一，再对新堆顶下滤
 
-代码如下：fileciteturn14file0
+代码如下：
 
 ```cpp
 template <typename T>
@@ -670,11 +670,11 @@ O(1)
 
 ## 9. 锦标赛树：胜者树与败者树
 
-从课件第 48 页开始，转入另一类 PQ 实现：**锦标赛树（Tournament Tree）**。fileciteturn14file0
+从课件第 48 页开始，转入另一类 PQ 实现：**锦标赛树（Tournament Tree）**。
 
 ## 9.1 胜者树（Winner Tree）
 
-课件第 49 页给出定义：fileciteturn14file0
+课件第 49 页给出定义：
 
 - 叶节点：待比较元素（选手）
 - 内部节点：孩子中的胜者
@@ -690,7 +690,7 @@ O(1)
 
 - `create()`：`O(n)`
 - `remove()`：`O(log n)`
-- `insert()`：`O(log n)` fileciteturn14file0
+- `insert()`：`O(log n)` 
 
 原因很简单：
 
@@ -702,7 +702,7 @@ O(1)
 
 ## 9.3 用于排序
 
-课件第 50～53 页展示了用胜者树做排序：fileciteturn14file0
+课件第 50～53 页展示了用胜者树做排序：
 
 1. 建胜者树
 2. 反复删除根（当前冠军）
@@ -719,7 +719,7 @@ O(n \log n)
 
 ## 9.4 与堆的比较
 
-课件第 54 页指出：fileciteturn14file0
+课件第 54 页指出：
 
 若只想从 `n` 个元素中找最小的 `k` 个（其中 `k \ll n`）：
 
@@ -739,7 +739,7 @@ O(n \log n)
 
 ## 9.5 败者树（Loser Tree）
 
-课件第 55～58 页进一步提出败者树。fileciteturn14file0
+课件第 55～58 页进一步提出败者树。
 
 其思路是：
 
@@ -760,11 +760,11 @@ O(n \log n)
 
 ## 10. 多叉堆（d-heap）
 
-从课件第 59 页开始，讨论完全二叉堆的推广：**多叉堆**。fileciteturn14file0
+从课件第 59 页开始，讨论完全二叉堆的推广：**多叉堆**。
 
 ## 10.1 为什么要考虑 d-heap
 
-课件第 60～61 页是从图的 PFS 算法切入的：fileciteturn14file0
+课件第 60～61 页是从图的 PFS 算法切入的：
 
 若在 Dijkstra / Prim 中用优先级队列管理顶点，则需要频繁做：
 
@@ -786,7 +786,7 @@ O(n \log n)
 
 ## 10.2 d-heap 的平衡：上山容易下山难
 
-课件第 62～63 页给出核心判断：fileciteturn14file0
+课件第 62～63 页给出核心判断：
 
 若把二叉堆改成 d 叉堆，则：
 
@@ -807,7 +807,7 @@ O(\log_d n)
 
 课件用一句非常形象的话总结：
 
-> **上山容易下山难** fileciteturn14file0
+> **上山容易下山难** 
 
 也就是说：
 
@@ -829,7 +829,7 @@ O(\log_d n)
 课件第 64 页正是说明：
 
 - 通过合适选取 `d`
-- 可以使 PFS 总体性能达到更好的平衡 fileciteturn14file0
+- 可以使 PFS 总体性能达到更好的平衡 
 
 这说明 d-heap 不是单纯的堆推广，而是：
 
@@ -839,7 +839,7 @@ O(\log_d n)
 
 ## 11. Fibonacci 堆：理论上更强的优先级队列
 
-课件第 65 页只做了简要提及：fileciteturn14file0
+课件第 65 页只做了简要提及：
 
 - 借助“新的上滤算法 + 懒惰合并”
 - 可以得到 Fibonacci 堆
@@ -863,11 +863,11 @@ O(\log_d n)
 
 ## 12. 左式堆：为什么要支持 merge
 
-从课件第 66 页开始进入左式堆（Leftist Heap）。fileciteturn14file0
+从课件第 66 页开始进入左式堆（Leftist Heap）。
 
 ## 12.1 问题：两堆合并能否高效完成？
 
-课件第 67 页先问一个非常自然的问题：fileciteturn14file0
+课件第 67 页先问一个非常自然的问题：
 
 给定两个堆 `A` 和 `B`，要构造：
 
@@ -903,7 +903,7 @@ O(m+n)
 
 课件接着追问：
 
-> 能否更快？比如做到 `O(log n)` 量级？ fileciteturn14file0
+> 能否更快？比如做到 `O(log n)` 量级？ 
 
 普通完全二叉堆由于结构性太强，很难支持高效 `merge()`。  
 于是需要一种：
@@ -919,7 +919,7 @@ O(m+n)
 
 ## 13.1 沿右侧藤合并
 
-课件第 68～72 页通过图示说明：fileciteturn14file0
+课件第 68～72 页通过图示说明：
 
 两堆合并本质上像“两路归并”，  
 但为了保持堆序，只需统一沿右侧分支（right spine / 右侧藤）递归下去。
@@ -938,7 +938,7 @@ O(m+n)
 
 ## 13.2 NPL：Null Path Length
 
-课件第 75 页引入定义：fileciteturn14file0
+课件第 75 页引入定义：
 
 对节点 `x`，`npl(x)` 表示：
 
@@ -954,7 +954,7 @@ O(m+n)
 
 ## 13.3 左式堆的定义
 
-课件第 76 页指出：fileciteturn14file0
+课件第 76 页指出：
 
 左式堆在保持堆序性的同时，还额外要求：
 
@@ -973,13 +973,13 @@ npl(lc(x)) \ge npl(rc(x))
 
 课件称之为：
 
-> **左式堆 = 处处左倾** fileciteturn14file0
+> **左式堆 = 处处左倾** 
 
 ---
 
 ## 13.4 为什么右侧链长是 `O(log n)`
 
-课件第 77 页给出结论：fileciteturn14file0
+课件第 77 页给出结论：
 
 若右侧链长度为 `d`，则左式堆至少包含：
 
@@ -1002,7 +1002,7 @@ O(\log n)
 
 ## 14.1 类定义
 
-课件第 79 页给出框架：fileciteturn14file0
+课件第 79 页给出框架：
 
 ```cpp
 template <typename T>
@@ -1033,7 +1033,7 @@ public:
 
 ## 14.2 merge 的递归结构
 
-课件第 81 页给出核心代码：fileciteturn14file0
+课件第 81 页给出核心代码：
 
 ```cpp
 template <typename T>
@@ -1097,7 +1097,7 @@ merge = O(\log n)
 
 ## 15.1 插入
 
-课件第 88 页给出：fileciteturn14file0
+课件第 88 页给出：
 
 ```cpp
 template <typename T>
@@ -1122,7 +1122,7 @@ insert = O(\log n)
 
 ## 15.2 删除
 
-课件第 89 页给出：fileciteturn14file0
+课件第 89 页给出：
 
 ```cpp
 template <typename T>
@@ -1152,11 +1152,11 @@ delMax = O(\log n)
 
 ## 16. 优先级搜索树（PST）简述
 
-课件最后第 90～95 页简要介绍了 **Priority Search Tree**。fileciteturn14file0
+课件最后第 90～95 页简要介绍了 **Priority Search Tree**。
 
 虽然这一部分在本章中只是简略带过，但它很有代表性，因为它展示了：
 
-> **Priority Search Tree = BST + PQ** fileciteturn14file0
+> **Priority Search Tree = BST + PQ** 
 
 也就是说，它同时融合了：
 
@@ -1174,7 +1174,7 @@ delMax = O(\log n)
 O(r + \log n)
 \]
 
-其中 `r` 为输出规模。 fileciteturn14file0
+其中 `r` 为输出规模。 
 
 这其实是在提醒我们：
 

@@ -34,7 +34,7 @@ description: "DSA CHAP5"
 - 同时又希望保留一定的顺序结构
 
 因此树可以看作一种介于“线性结构”和“图结构”之间的中间对象。课件还特别用了“半线性（semi-linear）”这个词来描述它：  
-它虽然不再是简单线性结构，但一旦指定某种遍历次序后，又会表现出明显的线性特征。 fileciteturn7file0
+它虽然不再是简单线性结构，***但一旦指定某种遍历次序后，又会表现出明显的线性特征***。 
 
 ---
 
@@ -63,7 +63,7 @@ description: "DSA CHAP5"
 
 课件先从图论视角定义树：
 
-> 树是**极小连通图**、也是**极大无环图**。 fileciteturn7file0
+> 树是**极小连通图**、也是**极大无环图**。 
 
 这两个说法其实是等价的：
 
@@ -72,17 +72,17 @@ description: "DSA CHAP5"
 
 若图中有 `n` 个节点，则树一定有：
 
-\[
+$
 e = n - 1
-\]
+$
 
-条边。课件第 3～4 页反复强调了这个关系，并指出它在复杂度分析时常常可以用来把边数 `e` 直接等同于 `Θ(n)`。 fileciteturn7file0
+条边。课件第 3～4 页反复强调了这个关系，并指出它在复杂度分析时常常可以用来把边数 `e` 直接等同于 `Θ(n)`。 
 
 ---
 
 ### 2.2 有根树
 
-在一棵树中指定任意一个节点 `r` 作为根（root）之后，这棵树就变成了**有根树（rooted tree）**。 fileciteturn7file0
+在一棵树中指定任意一个节点 `r` 作为根（root）之后，这棵树就变成了**有根树（rooted tree）**。 
 
 一旦有了根节点，很多方向性的概念就随之出现：
 
@@ -103,7 +103,7 @@ e = n - 1
 - 根的第 1 棵子树、第 2 棵子树、……是有顺序的
 - 或者说孩子之间存在“从左到右”的顺序
 
-那么这棵树就叫**有序树（ordered tree）**。 fileciteturn7file0
+那么这棵树就叫**有序树（ordered tree）**。 
 
 这点非常重要，因为后面的**二叉树**其实天然就是有序树：
 
@@ -114,11 +114,13 @@ e = n - 1
 
 ## 2.4 路径、深度、高度
 
+在不引起歧义的情况下，路径、节点和子树可以相互指代，path(v) ~ v ~ subtree(v)
+
 ### 2.4.1 路径与长度
 
 课件第 5 页定义了路径（path）：
 
-> 一串节点依次经边相连构成的序列。 fileciteturn7file0
+> 一串节点依次经边相连构成的序列。 
 
 路径长度通常指边数，而不是节点数。  
 例如从根到某节点若经过了 3 条边，则路径长度是 3。
@@ -129,11 +131,11 @@ e = n - 1
 
 节点 `v` 的深度定义为：
 
-\[
+$
 depth(v) = |path(v)|
-\]
+$
 
-也就是从根到 `v` 的唯一路径长度。 fileciteturn7file0
+也就是从根到 `v` 的唯一路径长度。 
 
 特别地：
 
@@ -151,13 +153,13 @@ depth(v) = |path(v)|
 对于整棵树，高度就是根节点的高度。  
 课件特别规定：
 
-> **空树高度取作 -1**。 fileciteturn7file0
+> **空树高度取作 -1**。 
 
 这一约定在递归定义中非常方便，例如叶节点高度自然变成：
 
-\[
+$
 1 + \max(-1,-1) = 0
-\]
+$
 
 ---
 
@@ -165,11 +167,11 @@ depth(v) = |path(v)|
 
 课件给出了一个不等式：
 
-\[
+$
 depth(v) + height(v) \le height(T)
-\]
+$
 
-这里 `T` 是整棵树。 fileciteturn7file0
+这里 `T` 是整棵树。 
 
 直观上很好理解：
 
@@ -185,7 +187,7 @@ depth(v) + height(v) \le height(T)
 
 第五章第二部分先讲一般树的表示，然后才转到二叉树。这一步其实很重要，因为它说明：
 
-> 二叉树不仅是一类特殊树，它还可以作为更一般有根有序树的统一表示方式。 fileciteturn7file0
+> 二叉树不仅是一类特殊树，它还可以作为更一般有根有序树的统一表示方式。 
 
 ---
 
@@ -197,7 +199,7 @@ depth(v) + height(v) \le height(T)
 - `data`
 - `parent`
 
-即每个节点只知道自己的父亲是谁。 fileciteturn7file0
+即每个节点只知道自己的父亲是谁。 ***补图***
 
 优点：
 
@@ -214,7 +216,7 @@ depth(v) + height(v) \le height(T)
 ### 3.2 仅记录孩子列表
 
 课件第 12 页又介绍另一种方式：  
-每个节点不记父亲，而是直接维护一个“孩子序列”。 fileciteturn7file0
+每个节点不记父亲，而是直接维护一个“孩子序列”。  ***补图***
 
 优点：
 
@@ -237,20 +239,20 @@ depth(v) + height(v) \le height(T)
 这样几乎所有接口都能高效支持，但代价是：
 
 - 结构更重
-- 存储冗余更多 fileciteturn7file0
+- 存储冗余更多 
 
 ---
 
 ### 3.4 长子-兄弟表示法（firstChild + nextSibling）
 
-课件第 14 页给出了一种非常经典的树表示方式：
+课件第 14 页给出了一种非常经典的树表示方式： ***为什么说父节点+子节点表示方式不好，但是长子-兄弟表示方法又可以接受？***
 
 - 每个节点保留两个引用：
   - `firstChild()`：长子
   - `nextSibling()`：右兄弟
-- 若再加 `parent`，则可 `O(1)` 找父亲
+- 若再加 `parent`，则可 `O(1)` 找父亲 ***为什么说遍历所有孩子的时间复杂度是O(deg(v)+1)***
 
-这就是**长子-兄弟表示法**。 fileciteturn7file0
+这就是**长子-兄弟表示法**。 
 
 它的好处是：
 
@@ -270,7 +272,7 @@ depth(v) + height(v) \le height(T)
 
 课件第 16 页定义：
 
-> 二叉树中每个节点的度数不超过 2，且孩子可明确区分为左、右。 fileciteturn7file0
+> 二叉树中每个节点的度数不超过 2，且孩子可明确区分为左、右。 
 
 因此二叉树天然是有序的：
 
@@ -295,11 +297,11 @@ depth(v) + height(v) \le height(T)
 
 于是高为 `h` 的二叉树，节点总数满足：
 
-\[
+$
 h+1 \le n \le 2^{h+1} - 1
-\]
+$
 
-课件第 17 页把这两个极端也画出来了： fileciteturn7file0
+课件第 17 页把这两个极端也画出来了： 
 
 - `n = h + 1`：退化为一条单链
 - `n = 2^{h+1} - 1`：满二叉树（full binary tree）
@@ -316,32 +318,32 @@ h+1 \le n \le 2^{h+1} - 1
 
 课件第 18 页给出：
 
-\[
+$
 e = n - 1 = n_1 + 2n_2
-\]
+$
 
 结合：
 
-\[
+$
 n = n_0 + n_1 + n_2
-\]
+$
 
 可推出：
 
-\[
+$
 n_0 = n_2 + 1
-\]
+$
 
-这是二叉树一个非常经典的性质，而且与 `n1` 无关。 fileciteturn7file0
+这是二叉树一个非常经典的性质，而且与 `n1` 无关。 
 
 ---
 
 ### 4.2.3 真二叉树（proper binary tree）
 
-若所有内部节点度数都恰为 2，也就是不存在单分支节点，那么叫**真二叉树（proper binary tree）**。课件第 19 页指出： fileciteturn7file0
+若所有内部节点度数都恰为 2，也就是不存在单分支节点，那么叫**真二叉树（proper binary tree）**。课件第 19 页指出： 
 
-- 通过引入适当外部节点（NULL 节点）
-- 可把任意二叉树扩充为真二叉树
+- 通过引入 $n_1 + 2 * n_0$ 个外部节点（NULL 节点）
+- 可把任意二叉树扩充为真二叉树 (**原有节点**度数统一为2)
 
 这在后面描述红黑树、Huffman 树等时都很有帮助，因为它能统一很多边界情况。
 
@@ -351,7 +353,7 @@ n_0 = n_2 + 1
 
 课件第 20 页明确指出：
 
-> 任意有根且有序的多叉树，都可以转化并表示为二叉树。 fileciteturn7file0
+> 任意有根且有序的多叉树，都可以转化并表示为二叉树。 
 
 转换规则正是长子-兄弟表示法：
 
@@ -370,7 +372,7 @@ n_0 = n_2 + 1
 
 ## 5.1 `BinNode` 模板类
 
-课件第 22 页给出的节点模板类大意如下： fileciteturn7file0
+课件第 22 页给出的节点模板类大意如下： 
 
 ```cpp
 template <typename T> using BinNodePosi = BinNode<T>*;
@@ -406,7 +408,7 @@ template <typename T> struct BinNode {
 
 ### 5.2.1 `insertAsLC()` / `insertAsRC()`
 
-课件实现： fileciteturn7file0
+课件实现： 
 
 ```cpp
 template <typename T>
@@ -428,7 +430,7 @@ BinNodePosi<T> BinNode<T>::insertAsRC(T const& e) {
 
 课件把 `size()` 定义为：
 
-> 以当前节点为根的子树规模。 fileciteturn7file0
+> 以当前节点为根的子树规模。 
 
 代码为：
 
@@ -449,9 +451,9 @@ int BinNode<T>::size() {
 
 复杂度为：
 
-\[
+$
 O(n)
-\]
+$
 
 其中 `n` 是该子树节点数。
 
@@ -459,7 +461,7 @@ O(n)
 
 ## 5.3 `BinTree` 模板类
 
-课件第 24 页给出树类框架： fileciteturn7file0
+课件第 24 页给出树类框架： 
 
 ```cpp
 template <typename T>
@@ -491,7 +493,7 @@ public:
 
 ## 6.1 节点插入
 
-课件第 25 页给出 `insert()`： fileciteturn7file0
+课件第 25 页给出 `insert()`： 
 
 ```cpp
 BinNodePosi<T> BinTree<T>::insert(T const& e, BinNodePosi<T> x) {
@@ -516,7 +518,7 @@ BinNodePosi<T> BinTree<T>::insert(T const& e, BinNodePosi<T> x) {
 - 被影响的只有该节点及其祖先
 - 与之无关的其他子树高度不会变
 
-所以课件第 27 页给出： fileciteturn7file0
+所以课件第 27 页给出： 
 
 ```cpp
 #define stature(p) ((p) ? (p)->height : -1)
@@ -540,7 +542,7 @@ void BinTree<T>::updateHeightAbove(BinNodePosi<T> x) {
 ## 6.3 子树接入 `attach()`
 
 课件第 26 页给出接口：  
-把一整棵子树 `S` 接到节点 `x` 的左 / 右侧。 fileciteturn7file0
+把一整棵子树 `S` 接到节点 `x` 的左 / 右侧。 
 
 其核心逻辑包括：
 
@@ -560,7 +562,7 @@ void BinTree<T>::updateHeightAbove(BinNodePosi<T> x) {
 
 ## 6.4 子树删除 `remove()`
 
-课件第 28 页给出删除某节点为根的整棵子树： fileciteturn7file0
+课件第 28 页给出删除某节点为根的整棵子树： 
 
 ```cpp
 int BinTree<T>::remove(BinNodePosi<T> x) {
@@ -594,7 +596,7 @@ static int removeAt(BinNodePosi<T> x) {
 ## 6.5 子树分离 `secede()`
 
 课件第 29 页给出：  
-把某节点 `x` 为根的子树从原树中剪下来，并重新封装成一棵独立新树。 fileciteturn7file0
+把某节点 `x` 为根的子树从原树中剪下来，并重新封装成一棵独立新树。 
 
 核心步骤：
 
@@ -614,13 +616,13 @@ static int removeAt(BinNodePosi<T> x) {
 
 ## 7. 二叉树遍历：总览
 
-课件从第 31 页开始进入整章最核心的部分：遍历。 fileciteturn7file0
+课件从第 31 页开始进入整章最核心的部分：遍历。 
 
 对任意二叉树：
 
-\[
+$
 T = L \cup x \cup R
-\]
+$
 
 遍历有三种最经典的 DFS 次序：
 
@@ -636,7 +638,7 @@ T = L \cup x \cup R
 
 > 遍历结果 ~ 遍历过程 ~ 遍历次序 ~ 遍历策略
 
-也就是说，遍历不仅是“输出顺序”，也是组织递归 / 迭代算法的一种方式。 fileciteturn7file0
+也就是说，遍历不仅是“输出顺序”，也是组织递归 / 迭代算法的一种方式。 
 
 ---
 
@@ -644,7 +646,7 @@ T = L \cup x \cup R
 
 ## 8.1 递归实现
 
-课件第 32 页给出标准递归： fileciteturn7file0
+课件第 32 页给出标准递归： 
 
 ```cpp
 template <typename T, typename VST>
@@ -658,18 +660,18 @@ void traverse(BinNodePosi<T> x, VST& visit) {
 
 复杂度显然是：
 
-\[
+$
 O(n)
-\]
+$
 
-因为每个节点恰被访问一次。
+因为每个节点恰被访问一次。 ***为什么不要递归方法(栈和什么有关)***
 
 ---
 
 ## 8.2 观察：藤缠树
 
 课件第 34 页给出一个非常漂亮的直观图景：  
-把不断沿左孩子向下走的这条链看作一根“藤”。 fileciteturn7file0
+把不断沿左孩子向下走的这条链看作一根“藤”。 
 
 先序遍历可以分解为：
 
@@ -683,7 +685,7 @@ O(n)
 
 ## 8.3 迭代实现：`visitAlongVine()`
 
-课件第 36 页给出辅助函数： fileciteturn7file0
+课件第 36 页给出辅助函数： 
 
 ```cpp
 static void visitAlongVine(
@@ -706,7 +708,7 @@ static void visitAlongVine(
 
 ## 8.4 完整迭代版
 
-课件第 37 页： fileciteturn7file0
+课件第 37 页： 
 
 ```cpp
 void travPre_I2(BinNodePosi<T> x, VST& visit) {
@@ -727,9 +729,9 @@ void travPre_I2(BinNodePosi<T> x, VST& visit) {
 
 因此总复杂度仍然是：
 
-\[
+$
 O(n)
-\]
+$
 
 ---
 
@@ -737,7 +739,7 @@ O(n)
 
 ## 9.1 递归实现
 
-课件第 40 页： fileciteturn7file0
+课件第 40 页： 
 
 ```cpp
 void traverse(BinNodePosi<T> x, VST& visit) {
@@ -762,13 +764,13 @@ void traverse(BinNodePosi<T> x, VST& visit) {
 
 - 沿左藤不断下探
 - 自底向上依次访问这些节点
-- 每访问一个节点后，再转入其右子树 fileciteturn7file0
+- 每访问一个节点后，再转入其右子树 
 
 ---
 
 ## 9.3 迭代实现：`goAlongVine()`
 
-课件第 44 页给出： fileciteturn7file0
+课件第 44 页给出： 
 
 ```cpp
 template <typename T>
@@ -788,7 +790,7 @@ static void goAlongVine(BinNodePosi<T> x, Stack<BinNodePosi<T>>& S) {
 
 ## 9.4 完整迭代版
 
-课件第 45 页： fileciteturn7file0
+课件第 45 页： 
 
 ```cpp
 void travIn_I1(BinNodePosi<T> x, V& visit) {
@@ -811,7 +813,7 @@ void travIn_I1(BinNodePosi<T> x, V& visit) {
 - 它的右子树还没处理
 
 因此此时访问它正好符合 `L | x | R`。  
-课件第 48 页正是用这个不变式解释正确性的。 fileciteturn7file0
+课件第 48 页正是用这个不变式解释正确性的。 
 
 ---
 
@@ -822,20 +824,20 @@ void travIn_I1(BinNodePosi<T> x, V& visit) {
 - 每个节点只会入栈一次
 - 也只会出栈一次
 
-因此用**分摊分析**看，总复杂度仍然是：
+因此用**分摊分析**看，总复杂度仍然是： ***怎么用分摊分析看***
 
-\[
+$
 O(n)
-\]
+$
 
-而不是 `O(n^2)`。 fileciteturn7file0
+而不是 `O(n^2)`。 
 
 ---
 
 ## 10. 中序后继 `succ()`
 
 课件第 51～52 页讲了一个非常常用的局部操作：  
-给定节点 `x`，求其中序遍历下的**直接后继**。 fileciteturn7file0
+给定节点 `x`，求其中序遍历下的**直接后继**。 
 
 ---
 
@@ -854,9 +856,9 @@ while (HasLChild(*s)) s = s->lc;
 
 因为中序次序是：
 
-\[
+$
 L | x | R
-\]
+$
 
 访问完 `x` 之后，下一步一定进入右子树，而右子树中最先访问的是最左节点。
 
@@ -876,7 +878,7 @@ s = s->parent;
 ```
 
 最后这个祖先就是后继。  
-若一直找不到，则说明 `x` 已是中序最后一个节点，后继为 `NULL`。 fileciteturn7file0
+若一直找不到，则说明 `x` 已是中序最后一个节点，后继为 `NULL`。 
 
 ---
 
@@ -884,11 +886,11 @@ s = s->parent;
 
 两种情况下复杂度都不超过树高：
 
-\[
+$
 O(h)
-\]
+$
 
-其中 `h` 是树高度。 fileciteturn7file0
+其中 `h` 是树高度。 
 
 ---
 
@@ -896,7 +898,7 @@ O(h)
 
 ## 11.1 递归实现
 
-课件第 54 页： fileciteturn7file0
+课件第 54 页： 
 
 ```cpp
 void traverse(BinNodePosi<T> x, VST& visit) {
@@ -913,7 +915,7 @@ void traverse(BinNodePosi<T> x, VST& visit) {
 - 更新高度
 - 删除整棵子树
 
-因为它总是先处理完孩子，再处理根。
+因为它总是先处理完孩子，再处理根。 ***怎么分析时间复杂度***
 
 ---
 
@@ -926,7 +928,7 @@ void traverse(BinNodePosi<T> x, VST& visit) {
 
 课件第 56 页给出的观察是：
 
-> 后序遍历第一次访问的一定是最左叶子。 fileciteturn7file0
+> 后序遍历第一次访问的一定是最左叶子。 
 
 于是可以从“如何走到当前子树的最左叶子”入手。
 
@@ -934,7 +936,7 @@ void traverse(BinNodePosi<T> x, VST& visit) {
 
 ## 11.3 `gotoLeftmostLeaf()`
 
-课件第 58 页： fileciteturn7file0
+课件第 58 页： 
 
 ```cpp
 static void gotoLeftmostLeaf(Stack<BinNodePosi<T>>& S) {
@@ -943,7 +945,7 @@ static void gotoLeftmostLeaf(Stack<BinNodePosi<T>>& S) {
             if (HasRChild(*x)) S.push(x->rc);
             S.push(x->lc);
         } else {
-            S.push(x->rc);
+            S.push(x->rc); // 到了叶子节点时，push进去的子节点是nullptr，所以此时S.top是空跳出循环，后面才会要pop
         }
     S.pop();
 }
@@ -959,14 +961,14 @@ static void gotoLeftmostLeaf(Stack<BinNodePosi<T>>& S) {
 
 ## 11.4 完整后序迭代版
 
-课件第 59 页： fileciteturn7file0
+课件第 59 页： 
 
 ```cpp
 void travPost_I(BinNodePosi<T> x, VST& visit) {
     Stack<BinNodePosi<T>> S;
     if (x) S.push(x);
     while (!S.empty()) {
-        if (S.top() != x->parent)
+        if (S.top() != x->parent) // 因为实际上我们只做了找最左边的叶子节点，所以右边的兄弟节点都没有展开
             gotoLeftmostLeaf(S);
         x = S.pop();
         visit(x->data);
@@ -986,11 +988,11 @@ void travPost_I(BinNodePosi<T> x, VST& visit) {
 
 因此时间复杂度仍为：
 
-\[
+$
 O(n)
-\]
+$
 
-课件第 65 页明确要求用分摊分析理解它。 fileciteturn7file0
+课件第 65 页明确要求用分摊分析理解它。 ***所以分摊分析法到底是什么？***
 
 ---
 
@@ -999,7 +1001,7 @@ O(n)
 ## 12.1 算法思想
 
 层次遍历即广度优先遍历。  
-课件第 70 页给出标准实现：借助辅助队列。 fileciteturn7file0
+课件第 70 页给出标准实现：借助辅助队列。 
 
 ```cpp
 template <typename T> template <typename VST>
@@ -1031,7 +1033,7 @@ void BinNode<T>::travLevel(VST& visit) {
 - 较浅层节点总更早出队
 - 同层中较左节点更早出队
 
-这正符合层次遍历定义。课件第 73 页对这一点做了详细分析。 fileciteturn7file0
+这正符合层次遍历定义。课件第 73 页对这一点做了详细分析。 
 
 ---
 
@@ -1045,9 +1047,9 @@ void BinNode<T>::travLevel(VST& visit) {
 
 因此总时间复杂度：
 
-\[
+$
 O(n)
-\]
+$
 
 ---
 
@@ -1057,9 +1059,9 @@ O(n)
 
 - 完全二叉树的层次遍历队列规模具有单峰对称结构
 - 最大可能达到 `⌈n/2⌉`
-- 完全二叉树尤其适合**向量式紧凑存储** fileciteturn7file0
+- 完全二叉树尤其适合**向量式紧凑存储** 
 
-这也是为什么完全二叉堆通常用数组存储，而普通二叉树更多用指针结构。
+这也是为什么完全二叉堆通常用数组存储，而普通二叉树更多用指针结构。 ***完全没看懂这里对应的ppt内容P75-77***
 
 ---
 
@@ -1067,7 +1069,7 @@ O(n)
 
 ## 13.1 哪些遍历序列组合可以重构树
 
-课件第 80～84 页讨论重构问题： fileciteturn7file0
+课件第 80～84 页讨论重构问题： 
 
 - **先序 + 中序**：可以重构
 - **后序 + 中序**：可以重构
@@ -1086,7 +1088,7 @@ O(n)
 ## 13.2 增强序列：把 `NULL` 也输出
 
 课件第 85～86 页提出一个非常漂亮的办法：  
-在遍历时把空孩子也作为“真实节点”输出，统一记成元字符 `^` 或 `NULL`。 fileciteturn7file0
+在遍历时把空孩子也作为“真实节点”输出，统一记成元字符 `^` 或 `NULL`。 
 
 例如增强先序 / 中序 / 后序中：
 
@@ -1110,13 +1112,13 @@ O(n)
 - 后序遍历
 - 逆波兰表达式（RPN）
 
-三者天然对应。 fileciteturn7file0
+三者天然对应。 
 
 例如表达式：
 
-\[
+$
 (a+b)	imes c
-\]
+$
 
 其表达式树中：
 
@@ -1142,7 +1144,7 @@ a b + c *
 ## 15. Huffman 编码树
 
 二叉树在本章一个非常重要的应用是 **Huffman 编码树**。  
-课件从第 87 页开始专门讲这一部分。 fileciteturn7file0
+课件从第 87 页开始专门讲这一部分。 
 
 ---
 
@@ -1167,7 +1169,7 @@ a b + c *
 - 左边记 0
 - 右边记 1
 - 每个字符放在叶节点上
-- 根到该叶的路径就是字符编码 fileciteturn7file0
+- 根到该叶的路径就是字符编码 
 
 这样的编码天然具有：
 
@@ -1183,11 +1185,11 @@ a b + c *
 若字符 `x` 的出现频率为 `w(x)`，其编码长度等于在树中的深度 `depth(v(x))`。  
 则整棵树的平均带权编码长度可写为：
 
-\[
+$
 WPL(T) = \sum_x w(x)\cdot depth(v(x))
-\]
+$
 
-课件用 `wald(T)` 等记号表达这一思想。 fileciteturn7file0
+课件用 `wald(T)` 等记号表达这一思想。 
 
 最优 Huffman 树的目标就是最小化这个值。
 
@@ -1195,7 +1197,7 @@ WPL(T) = \sum_x w(x)\cdot depth(v(x))
 
 ## 15.4 最优编码树的性质
 
-课件第 91～99 页给出了几个关键性质： fileciteturn7file0
+课件第 91～99 页给出了几个关键性质： 
 
 ### 15.4.1 双子性
 
@@ -1219,7 +1221,7 @@ WPL(T) = \sum_x w(x)\cdot depth(v(x))
 这是 Huffman 贪心算法正确性的核心基础之一。  
 课件指出：
 
-> 频率最低的两个字符，在某棵最优编码树中必位于最底层并互为兄弟。 fileciteturn7file0
+> 频率最低的两个字符，在某棵最优编码树中必位于最底层并互为兄弟。 
 
 这使得我们可以把它们“合并成一个超字符”，递归处理更小问题。
 
@@ -1227,7 +1229,7 @@ WPL(T) = \sum_x w(x)\cdot depth(v(x))
 
 ## 15.5 Huffman 算法
 
-课件第 95 页给出贪心策略： fileciteturn7file0
+课件第 95 页给出贪心策略： 
 
 1. 为每个字符建立一棵单节点树
 2. 构成一个森林 `F`
@@ -1243,7 +1245,7 @@ WPL(T) = \sum_x w(x)\cdot depth(v(x))
 
 ## 15.6 正确性：为什么贪心是对的
 
-课件第 97～102 页从“双子性”“层次性”“数学归纳”三个角度证明： fileciteturn7file0
+课件第 97～102 页从“双子性”“层次性”“数学归纳”三个角度证明： 
 
 - 最低频两个字符可视作互为兄弟
 - 合并它们形成新字符 `z`
@@ -1257,7 +1259,7 @@ WPL(T) = \sum_x w(x)\cdot depth(v(x))
 
 ## 15.7 代码实现中的数据结构
 
-课件第 105～111 页给出实现思路： fileciteturn7file0
+课件第 105～111 页给出实现思路： 
 
 - `HuffChar`：字符 + 频率
 - `HuffTree = BinTree<HuffChar>`
@@ -1266,15 +1268,15 @@ WPL(T) = \sum_x w(x)\cdot depth(v(x))
 初始实现里，森林用列表维护；  
 每次通过 `minHChar()` 在线性时间找出最小两棵树，于是总复杂度是：
 
-\[
+$
 O(n^2)
-\]
+$
 
 ---
 
 ## 15.8 如何优化到 `O(n log n)`
 
-课件第 111 页指出三种底层实现方式： fileciteturn7file0
+课件第 111 页指出三种底层实现方式： 
 
 1. 有序向量：总体 `O(n^2)`
 2. 有序列表：总体 `O(n^2)`
@@ -1292,7 +1294,7 @@ O(n^2)
 ## 16. 比较模型下的下界：判定树
 
 第五章最后一部分其实已经从“树作为数据结构”转向“树作为分析工具”。  
-课件第 114 页开始讲： fileciteturn7file0
+课件第 114 页开始讲： 
 
 > 同一问题的不同算法复杂度可能相差很大，那么问题本身有没有“难度下界”？
 
@@ -1306,7 +1308,7 @@ O(n^2)
 1. 设计更快的算法
 2. 证明更高的复杂度下界
 
-当某算法达到下界时，就可说它在大 O 意义下已经最优。课件第 114 页以排序问题为例说明这一点。 fileciteturn7file0
+当某算法达到下界时，就可说它在大 O 意义下已经最优。课件第 114 页以排序问题为例说明这一点。 
 
 ---
 
@@ -1320,9 +1322,9 @@ O(n^2)
 其中最简单的是**比较树**：  
 每个内部节点表示一次关键码比较，例如：
 
-\[
+$
 K_i - K_j
-\]
+$
 
 比较结果可能是：
 
@@ -1330,7 +1332,7 @@ K_i - K_j
 - `=`
 - `>`
 
-因此对应一棵三叉树。 fileciteturn7file0
+因此对应一棵三叉树。 
 
 ---
 
@@ -1344,25 +1346,25 @@ K_i - K_j
 
 所以必须满足：
 
-\[
+$
 3^h \ge n!
-\]
+$
 
 或在二叉比较模型下：
 
-\[
+$
 2^h \ge n!
-\]
+$
 
 由 Stirling 近似可推出：
 
-\[
+$
 h = \Omega(n \log n)
-\]
+$
 
 因此：
 
-> 任何基于比较的排序算法，在最坏情况下都至少需要 `Ω(n log n)` 时间。 fileciteturn7file0
+> 任何基于比较的排序算法，在最坏情况下都至少需要 `Ω(n log n)` 时间。 
 
 这也是归并排序、堆排序等算法“最优”的理论基础。
 
@@ -1370,7 +1372,7 @@ h = \Omega(n \log n)
 
 ## 16.4 归约（Reduction）
 
-课件第 121～122 页还提到另一个证明下界的重要工具：**归约**。 fileciteturn7file0
+课件第 121～122 页还提到另一个证明下界的重要工具：**归约**。 
 
 思路是：
 

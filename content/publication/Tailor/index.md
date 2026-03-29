@@ -11,11 +11,11 @@ authors:
 highlight_authors:
 - Ho-Jui Fang
 
-publication_types: ["1"]
+publication_types: ["2"]
 publication: "*IEEE Transactions on Visualization and Computer Graphics*"
 publication_short: "TVCG"
 
-abstract: "一句话介绍这篇论文做了什么、解决了什么问题。"
+abstract: "An Integrated Text-Driven CG-Ready Human and Garment Generation System."
 
 date: 2026-01-01
 publishDate: 2026-01-01
@@ -36,11 +36,11 @@ url_source: ""
 doi: "10.48550/arXiv.2503.12052"
 ---
 
-这篇论文的详细介绍可以写在这里。
+Creating detailed 3D human avatars with fitted garments traditionally requires specialized expertise and labor-intensive workflows. While recent advances in generative AI have enabled text-to-3D human and clothing synthesis, existing methods fall short in offering accessible, integrated pipelines for generating CG-ready 3D avatars with physically compatible outfits; here we use the term CG-ready for models following a technical aesthetic common in computer graphics (CG) and adopt standard CG polygonal meshes and strands representations (rather than neural representations like NeRF and 3DGS) that can be directly integrated into conventional CG pipelines and support downstream tasks such as physical simulation. 
 
-你可以写：
-- 研究背景
-- 核心方法
-- 实验结果
-- 你的贡献
-- 和项目主页、代码、PDF 的关系
+To bridge this gap, we introduce Tailor, an integrated text-to-3D framework that generates high-fidelity, customizable 3D avatars dressed in simulation-ready garments. Tailor consists of three stages. 
+1. Semantic Parsing: we employ a large language model to interpret textual descriptions and translate them into parameterized human avatars and semantically matched garment templates. 
+2. Geometry-Aware Garment Generation: we propose topology-preserving deformation with novel geometric losses to generate body-aligned garments under text control. 
+3. Consistent Texture Synthesis: we propose a novel multi-view diffusion process optimized for garment texturing, which enforces view consistency, preserves photorealistic details, and optionally supports symmetric texture generation common in garments. 
+
+Through comprehensive quantitative and qualitative evaluations, we demonstrate that Tailor outperforms state-of-the-art methods in fidelity, usability, and diversity.
