@@ -284,22 +284,22 @@ template <typename T> struct PQ { // priority queue
 
 - 父亲下标：
 
-\[
+$
 Parent(i)=\lfloor (i-1)/2 
 floor
-\]
+$
 
 - 左孩子下标：
 
-\[
+$
 LChild(i)=2i+1
-\]
+$
 
 - 右孩子下标：
 
-\[
+$
 RChild(i)=2i+2
-\]
+$
 
 这说明完全二叉堆之所以工程上极其方便，关键就在于：
 
@@ -312,10 +312,9 @@ RChild(i)=2i+2
 课件第 14 页给出最大堆的堆序性：
 
 > 只要 `0 < i`，就必满足
-
-\[
+$
 H[i] \le H[Parent(i)]
-\]
+$
 
 也就是说：
 
@@ -339,9 +338,9 @@ template <typename T> T PQ_ComplHeap<T>::getMax() { return _elem[0]; }
 
 它是一棵完全二叉树，所以高度是：
 
-\[
+$
 O(\log n)
-\]
+$
 
 ### 堆序性
 
@@ -420,9 +419,9 @@ template <typename T> Rank percolateUp( T* A, Rank i ) {
 
 因此：
 
-\[
+$
 insert = O(\log n)
-\]
+$
 
 不过课件也提醒：
 
@@ -496,9 +495,9 @@ template <typename T> Rank percolateDown( T* A, Rank n, Rank i ) {
 
 所以：
 
-\[
+$
 delMax = O(\log n)
-\]
+$
 
 这与 `insert` 同阶。
 
@@ -526,11 +525,11 @@ for ( Rank i = 1; i < n; i++ )
 
 总复杂度最坏可达：
 
-\[
+$
 O(n \log n)
-\]
+$
 
-课件甚至指出：这么长的时间，本足以全排序。
+课件甚至指出：这么长的时间，本足以全排序，没办法体现堆的优势
 
 ---
 
@@ -576,11 +575,15 @@ void heapify( T* A, Rank n ) {
 
 于是：
 
-\[
+$
 heapify = O(n)
-\]
+$
 
 这正是优先级队列 / 堆排序中非常关键的一个结论。
+
+>为什么换了个建堆方向(由自上而下建堆变为自下而上建堆)会导致运算复杂度的变换？
+- 自上而下建堆中有n/2个点需要上移O(log n)步，所以是O(n log n)
+- 而自下而上建堆中数量更多的叶子节点需要移动的步数变少了(从深度变成了高度，即h-深度)，所以累积复杂度少了很多，变为O(n)
 
 ---
 
@@ -600,9 +603,9 @@ heapify = O(n)
 
 因此总时间：
 
-\[
-O(n) + n 	imes O(\log n) = O(n \log n)
-\]
+$
+O(n) + n \times O(\log n) = O(n \log n)
+$
 
 这就是堆排序。
 
@@ -647,15 +650,15 @@ void Vector<T>::heapSort( Rank lo, Rank hi ) {
 
 ### 时间复杂度
 
-\[
+$
 O(n \log n)
-\]
+$
 
 ### 额外空间
 
-\[
+$
 O(1)
-\]
+$
 
 因为是原地排序。
 
@@ -711,9 +714,9 @@ O(1)
 
 总复杂度同样是：
 
-\[
+$
 O(n \log n)
-\]
+$
 
 ---
 
@@ -792,9 +795,9 @@ O(n \log n)
 
 - 树高下降到：
 
-\[
+$
 O(\log_d n)
-\]
+$
 
 因此：
 
@@ -871,9 +874,9 @@ O(\log_d n)
 
 给定两个堆 `A` 和 `B`，要构造：
 
-\[
+$
 H = merge(A, B)
-\]
+$
 
 若不用专门设计，可能有两种朴素办法：
 
@@ -881,15 +884,15 @@ H = merge(A, B)
 
 不断做：
 
-\[
+$
 A.insert(B.delMax())
-\]
+$
 
 总时间约：
 
-\[
+$
 O(m \log (n+m))
-\]
+$
 
 ### 方法二
 
@@ -897,9 +900,9 @@ O(m \log (n+m))
 
 总时间：
 
-\[
+$
 O(m+n)
-\]
+$
 
 课件接着追问：
 
@@ -958,9 +961,9 @@ O(m+n)
 
 左式堆在保持堆序性的同时，还额外要求：
 
-\[
+$
 npl(lc(x)) \ge npl(rc(x))
-\]
+$
 
 也就是说：
 
@@ -983,16 +986,16 @@ npl(lc(x)) \ge npl(rc(x))
 
 若右侧链长度为 `d`，则左式堆至少包含：
 
-\[
+$
 2^d - 1
-\]
+$
 
 个内部节点（等价量级表达）。  
 因此反过来，对包含 `n` 个节点的左式堆，其右侧链长度必为：
 
-\[
+$
 O(\log n)
-\]
+$
 
 这正是左式堆能高效 `merge()` 的理论根基。
 
@@ -1067,9 +1070,9 @@ static BinNodePosi<T> merge( BinNodePosi<T> a, BinNodePosi<T> b ) {
 
 递归回来后，若：
 
-\[
+$
 npl(lc) < npl(rc)
-\]
+$
 
 就交换左右子树，以恢复左倾性。
 
@@ -1083,9 +1086,9 @@ npl(lc) < npl(rc)
 而左式堆的右侧链长度始终是 `O(log n)`。  
 因此：
 
-\[
+$
 merge = O(\log n)
-\]
+$
 
 这也是左式堆相比完全二叉堆最大的特色：
 
@@ -1114,9 +1117,9 @@ void PQ_LeftHeap<T>::insert( T e ) {
 
 因此：
 
-\[
+$
 insert = O(\log n)
-\]
+$
 
 ---
 
@@ -1144,9 +1147,9 @@ T PQ_LeftHeap<T>::delMax() {
 
 因此：
 
-\[
+$
 delMax = O(\log n)
-\]
+$
 
 ---
 
@@ -1170,9 +1173,9 @@ delMax = O(\log n)
 - 接受的节点直接输出
 - 查询时间最终为：
 
-\[
+$
 O(r + \log n)
-\]
+$
 
 其中 `r` 为输出规模。 
 
