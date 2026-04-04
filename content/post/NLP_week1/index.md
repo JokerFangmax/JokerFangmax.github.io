@@ -11,7 +11,7 @@ tags:
 - Blog
 
 categories:
-- Notes
+- NLP Notes
 
 summary: "NLP第一周课程笔记"
 ---

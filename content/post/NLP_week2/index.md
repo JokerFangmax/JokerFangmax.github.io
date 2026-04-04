@@ -13,7 +13,7 @@ tags:
 - Lecture
 
 categories:
-- Notes
+- NLP Notes
 
 summary: "NLP Week 1 — Introduction Lecture Notes > 本文根据课程 slides 整理，只保留知识点相关内容，删除课程介绍、评分方式、教师与助教信息、读书推荐等非知识性部分。"
 ---

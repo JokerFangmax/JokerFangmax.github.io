@@ -319,11 +319,7 @@ $
 
 $$
 L_{\text{CFM}}(\theta)=
-\underset{
-t \sim \mathrm{Unif}[0,1],
-z \sim p_{\text{data}},
-x \sim p_t(\cdot \mid z)
-}{\mathbb{E}}
+\mathbb{E}_{z\sim p_{\text{data}},\; t\sim \mathrm{Unif}[0,1],\; x\sim p_t(\cdot|z)}
 \left[
 \left\|u_t^\theta(x)-u_t^{\text{target}}(x \mid z)\right\|^2
 \right].
