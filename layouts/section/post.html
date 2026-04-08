@@ -1,0 +1,77 @@
+{{- define "main" -}}
+
+{{ partial "page_header.html" . }}
+
+{{ $pages := .RegularPages.ByDate.Reverse }}
+{{ $groups := dict }}
+{{ $categoryNames := slice }}
+
+{{ range $pages }}
+  {{ $page := . }}
+  {{ $categories := $page.Params.categories | default (slice "Uncategorized") }}
+  {{ range $categories }}
+    {{ $name := . | default "Uncategorized" }}
+    {{ if not (in $categoryNames $name) }}
+      {{ $categoryNames = $categoryNames | append $name }}
+    {{ end }}
+    {{ $existing := index $groups $name | default (slice) }}
+    {{ $groups = merge $groups (dict $name ($existing | append $page)) }}
+  {{ end }}
+{{ end }}
+
+{{ $categoryNames = sort $categoryNames }}
+
+<div class="universal-wrapper post-categories-page" id="post-category-top">
+  {{ with .Content }}
+  <div class="article-style">{{ . }}</div>
+  {{ end }}
+
+  {{ if gt (len $categoryNames) 0 }}
+  <div class="post-category-nav" aria-label="Post categories">
+    {{ range $categoryNames }}
+      {{ $name := . }}
+      {{ $count := len (index $groups $name) }}
+      <a class="post-category-chip" href="#{{ anchorize $name }}">
+        <span>{{ $name }}</span>
+        <span class="post-category-count">{{ $count }}</span>
+      </a>
+    {{ end }}
+  </div>
+
+  <div class="post-category-groups">
+    {{ range $categoryNames }}
+      {{ $name := . }}
+      {{ $items := index $groups $name }}
+      <section class="post-category-section" id="{{ anchorize $name }}">
+        <div class="post-category-header">
+          <div>
+            <p class="post-category-eyebrow">Category</p>
+            <h2>{{ $name }}</h2>
+          </div>
+          <a class="post-category-backlink" href="#post-category-top">Back to top</a>
+        </div>
+
+        <p class="post-category-summary">{{ len $items }} posts</p>
+
+        <div class="post-category-items">
+          {{ range $items }}
+            {{ if eq $.Params.view 1 }}
+              {{ partial "li_list" . }}
+            {{ else if eq $.Params.view 3 }}
+              {{ partial "li_card" . }}
+            {{ else }}
+              {{ partial "li_compact" . }}
+            {{ end }}
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  </div>
+  {{ else }}
+  <div class="article-style">
+    <p>No posts found.</p>
+  </div>
+  {{ end }}
+</div>
+
+{{- end -}}

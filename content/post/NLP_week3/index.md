@@ -7,7 +7,7 @@ tags:
   - NLP
   - Transformer
 categories:
-  - Transformer
+  - NLP Notes
 description: "NLP第三周课堂笔记"
 ---
 

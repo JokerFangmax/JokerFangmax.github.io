@@ -7,7 +7,7 @@ tags:
   - NLP
   - LLM
 categories:
-  - LLM
+  - NLP Notes
 description: "NLP第四周课堂笔记"
 ---
 

@@ -81,12 +81,12 @@ $
 u_t^\theta(x|y)
 $
 
-训练时，数据也不再只是样本 $z$，而是成对的数据 $(z,y)\sim p_{\text{data}}(z,y)$。  
+训练时，数据也不再只是样本 $z$，而是成对的数据 $(z,y)\sim p_{\text{data}}(z,y)$，即z和条件y有关
+
 因此 guided conditional flow matching 的目标可以写成：
 
 $
-L_{\text{guided}}^{\text{CFM}}(\theta)
-=
+L_{\text{guided}}^{\text{CFM}}(\theta)=
 \mathbb{E}_{(z,y)\sim p_{\text{data}}(z,y),\; t\sim \mathrm{Unif}[0,1],\; x\sim p_t(\cdot|z)}
 \left[
 \|u_t^\theta(x|y)-u_t^{\text{target}}(x|z)\|^2
@@ -97,7 +97,7 @@ $
 
 - 条件 $y$ 决定的是我们想生成哪一类内容
 - 但条件概率路径 $p_t(\cdot|z)$ 本身仍然是“围绕具体数据点 $z$”定义的
-- 所以训练目标仍然是在回归 $u_t^{\text{target}}(x|z)$，只不过网络现在多看到了条件 $y$ 
+- 所以训练目标仍然是在回归 $u_t^{\text{target}}(x|z)$，只不过网络现在多看到了条件 $y$ (后面的目标速度中没有y是因为z和y是联合生成的，即z就已经隐含了是y的条件)
 
 从实现角度说，这件事也很好理解：
 
@@ -130,9 +130,9 @@ $
 
 讲义里指出，vanilla guidance 在实践中经常“不够 fit 到 desired label $y$”；原因可能包括：
 
-- 模型欠拟合，并没有学到真正的条件边缘向量场
+- 模型欠拟合，并没有学到真正的条件边缘向量场 ***为什么会欠拟合***
 - 数据本身不完美，比如网页抓取的 text-image pairs 有错误
-- 条件信号相对于图像先验来说太弱，推理时容易被“平均掉” 
+- 条件信号相对于图像先验来说太弱，推理时容易被“平均掉”  ***为什么会太弱，我要怎么解决***
 
 于是一个自然的问题就出现了：
 
@@ -175,7 +175,7 @@ $
 u_t^{\text{target}}(x|y)=a_t \nabla \log p_t(x|y) + b_t x
 $
 
-其中 $a_t,b_t$ 只和时间有关。:contentReference[oaicite:8]{index=8}
+其中 $a_t,b_t$ 只和时间有关。
 
 接着利用条件概率的分解：
 
@@ -222,7 +222,7 @@ $
 $
 
 再对应回向量场，就得到一个被“prompt-reinforced”的 guided vector field。  
-讲义里把这件事概括成：classifier guidance 通过分解 guided vector field，然后放大 classifier 的梯度项 $\nabla \log p_t(y|x)$，达到更强条件对齐的效果。:contentReference[oaicite:9]{index=9}
+讲义里把这件事概括成：classifier guidance 通过分解 guided vector field，然后放大 classifier 的梯度项 $\nabla \log p_t(y|x)$，达到更强条件对齐的效果。
 
 这里的直觉非常清楚：
 
@@ -284,8 +284,7 @@ $
 如果要把上面的“差值部分”放大 $w$ 倍，那么最自然的写法就是：
 
 $
-\tilde u_t(x|y)
-=
+\tilde u_t(x|y)=
 u_t(x|\emptyset)
 +
 w\big(u_t(x|y)-u_t(x|\emptyset)\big)
@@ -294,8 +293,7 @@ $
 展开以后就是：
 
 $
-\tilde u_t(x|y)
-=
+\tilde u_t(x|y)=
 (1-w)u_t(x|\emptyset)+wu_t(x|y)
 $
 
@@ -332,8 +330,7 @@ $
 因为
 
 $
-\tilde u_t(x|y)
-=
+\tilde u_t(x|y)=
 u_t(x|\emptyset)+w\big(u_t(x|y)-u_t(x|\emptyset)\big)
 $
 
@@ -382,8 +379,7 @@ $
 讲义给出的 CFG conditional flow matching 目标是：
 
 $
-L_{\text{CFG-CFM}}(\theta)
-=
+L_{\text{CFG-CFM}}(\theta)=
 \mathbb{E}_{(z,y)\sim p_{\text{data}}(z,y),\; t\sim\mathrm{Unif}[0,1],\; x\sim p_t(\cdot|z)}
 \left[
 \|u_t^\theta(x|y)-u_t^{\text{target}}(x|z)\|^2
@@ -454,10 +450,10 @@ $
 
 - 初始化 $X_0\sim p_{\text{init}}$
 - 然后用 $\tilde u_t^\theta(X_t|y)$ 从 $t=0$ 积分到 $t=1$
-- 最终得到样本 $X_1$ :contentReference[oaicite:17]{index=17}
+- 最终得到样本 $X_1$ 
 
 而对于 diffusion model，讲义也明确说了：  
-直接把原来的 $u_t^\theta(x|y)$ 替换成 $\tilde u_t^\theta(x|y)$，再照常按 SDE 采样即可。:contentReference[oaicite:18]{index=18}
+直接把原来的 $u_t^\theta(x|y)$ 替换成 $\tilde u_t^\theta(x|y)$，再照常按 SDE 采样即可。
 
 所以 CFG 并不是一种新的模型结构，而更像是一种：
 
@@ -478,7 +474,7 @@ $
 也就是“只由条件带来的额外偏移”。
 
 所以当 $w$ 增大时，模型会更强烈地向“更符合 prompt”的方向走。  
-讲义中也提到，随着 guidance scale 增大，生成结果通常会表现出更好的 conditioning alignment；在实践中，很多 AI 生成图像和视频都强依赖较大的 CFG scale。:contentReference[oaicite:19]{index=19}
+讲义中也提到，随着 guidance scale 增大，生成结果通常会表现出更好的 conditioning alignment；在实践中，很多 AI 生成图像和视频都强依赖较大的 CFG scale。
 
 你可以把它想成：
 
@@ -503,7 +499,7 @@ $
 讲义里也明确说明：
 
 > 如果使用 $w>1$，最终 $X_1$ 的分布不一定仍然严格对齐于 $p_{\text{data}}(\cdot|y)$。  
-> 但经验上会表现出更好的条件一致性，因此它本质上是一个 heuristic。:contentReference[oaicite:20]{index=20}
+> 但经验上会表现出更好的条件一致性，因此它本质上是一个 heuristic。
 
 这句话很重要，因为它解释了一个常见现象：
 
@@ -530,7 +526,7 @@ $
 
 ## 17.3 效果极强
 
-它直接提升“prompt adherence”，而这恰恰是文生图/文生视频最重要的体验指标之一。:contentReference[oaicite:21]{index=21}
+它直接提升“prompt adherence”，而这恰恰是文生图/文生视频最重要的体验指标之一。
 
 所以 CFG 虽然从理论上只是 heuristic，但从工程上几乎成了现代生成模型的标准配置。
 
@@ -544,13 +540,13 @@ $
    $
    p_{\text{data}}(\cdot|y)
    $
-   中采样。:contentReference[oaicite:22]{index=22}
+   中采样。
 
 2. 最基础的做法是训练条件模型 $u_t^\theta(x|y)$，这就是 vanilla guidance。
 
 3. 但实践中普通条件训练往往不够贴 prompt，因此需要人为增强条件作用。
 
-4. Classifier guidance 的思路是：把条件相关的 classifier 梯度 $\nabla \log p_t(y|x)$ 放大。:contentReference[oaicite:25]{index=25}
+4. Classifier guidance 的思路是：把条件相关的 classifier 梯度 $\nabla \log p_t(y|x)$ 放大。
 
 5. Classifier-free guidance 则不再依赖额外 classifier，而是直接放大  
    $
@@ -568,7 +564,9 @@ $
 
 如果只记一句话，那就是：
 
-> **CFG 的本质，是把“有条件模型”和“无条件模型”的差值当成条件信号，并在推理时把这部分信号放大。**
+> **CFG 的本质，是把“有条件模型”和“无条件模型”的差值当成条件信号，并在推理时把这部分信号放大。** 
+> 
+> **核心章节第五章**
 
 ---
 
