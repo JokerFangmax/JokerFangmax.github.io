@@ -236,5 +236,38 @@
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
   }
+
+  const nowcoderOverviewBody = document.querySelector('.js-nowcoder-overview-body');
+  const nowcoderQuestions = Array.from(document.querySelectorAll('.nowcoder-question'));
+
+  if (nowcoderOverviewBody && nowcoderQuestions.length) {
+    nowcoderOverviewBody.innerHTML = nowcoderQuestions
+      .map((question) => {
+        const seq = question.dataset.seq || '';
+        const title = question.dataset.title || '';
+        const date = question.dataset.date || '';
+        const tags = question.dataset.tags || '';
+        const difficulty = question.dataset.difficulty || '';
+        const status = question.dataset.status || '';
+        const link = question.dataset.link || '';
+        const anchor = question.id || '';
+        const remarks = link
+          ? `<a href="${link}" target="_blank" rel="noopener noreferrer">牛客链接</a>`
+          : '待补充';
+
+        return `
+          <tr>
+            <td>${seq}</td>
+            <td>${date}</td>
+            <td><a href="#${anchor}">${title}</a></td>
+            <td>${tags}</td>
+            <td>${difficulty}</td>
+            <td>${status}</td>
+            <td>${remarks}</td>
+          </tr>
+        `;
+      })
+      .join('');
+  }
 </script>
 {{ end }}

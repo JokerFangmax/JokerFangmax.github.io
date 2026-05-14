@@ -1,0 +1,52 @@
+{{- $title := .Get "title" | default "题目名称" -}}
+{{- $source := .Get "source" | default "牛客网" -}}
+{{- $link := .Get "link" | default "" -}}
+{{- $tags := .Get "tags" | default "待补充" -}}
+{{- $difficulty := .Get "difficulty" | default "待补充" -}}
+{{- $status := .Get "status" | default "未开始" -}}
+{{- $lastDate := .Page.Scratch.Get "nowcoder_last_date" -}}
+{{- $pageDate := .Page.Date.Format "2006-01-02" -}}
+{{- $date := .Get "date" | default ($lastDate | default $pageDate) -}}
+{{- .Page.Scratch.Set "nowcoder_last_date" $date -}}
+
+{{- $questions := .Page.Scratch.Get "nowcoder_questions" | default (slice) -}}
+{{- $seq := add (len $questions) 1 -}}
+{{- $anchor := printf "nowcoder-question-%d" $seq -}}
+{{- $record := dict
+  "seq" $seq
+  "title" $title
+  "date" $date
+  "source" $source
+  "link" $link
+  "tags" $tags
+  "difficulty" $difficulty
+  "status" $status
+  "anchor" $anchor
+-}}
+{{- .Page.Scratch.Set "nowcoder_questions" ($questions | append $record) -}}
+
+<section
+  class="nowcoder-question"
+  id="{{ $anchor }}"
+  data-seq="{{ $seq }}"
+  data-title="{{ $title }}"
+  data-date="{{ $date }}"
+  data-source="{{ $source }}"
+  data-link="{{ $link }}"
+  data-tags="{{ $tags }}"
+  data-difficulty="{{ $difficulty }}"
+  data-status="{{ $status }}"
+>
+  <h3>题目 {{ $seq }}：{{ $title }}</h3>
+
+  <ul>
+    <li><strong>日期</strong>：{{ $date }}</li>
+    <li><strong>来源</strong>：{{ $source }}</li>
+    <li><strong>链接</strong>：{{ if $link }}<a href="{{ $link }}" target="_blank" rel="noopener noreferrer">{{ $link }}</a>{{ else }}待补充{{ end }}</li>
+    <li><strong>标签</strong>：{{ $tags }}</li>
+    <li><strong>难度</strong>：{{ $difficulty }}</li>
+    <li><strong>状态</strong>：{{ $status }}</li>
+  </ul>
+
+  {{ .Inner | markdownify }}
+</section>
