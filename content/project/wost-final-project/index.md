@@ -219,7 +219,7 @@ Adaptive sampling asks where variance concentrates. Spot saturates near the maxi
 ![2D path trace](fig11_spot_live_trace.png)
 **Figure 12.** A 2D slice of the live path trace.
 
-Try the [3D live demo](/files/wost-final-project/boundary_bias_detector_3d.html) to inspect the reflection-heavy behavior near difficult Neumann regions.
+Try the [3D live demo](/files/wost-final-project/live_trace_interactive_3d.html) to inspect the reflection-heavy behavior near difficult Neumann regions.
 
 ### 10.3 Antithetic Sampling
 
