@@ -12,17 +12,7 @@
 {{- $questions := .Page.Scratch.Get "nowcoder_questions" | default (slice) -}}
 {{- $seq := add (len $questions) 1 -}}
 {{- $anchor := printf "nowcoder-question-%d" $seq -}}
-{{- $record := dict
-  "seq" $seq
-  "title" $title
-  "date" $date
-  "source" $source
-  "link" $link
-  "tags" $tags
-  "difficulty" $difficulty
-  "status" $status
-  "anchor" $anchor
--}}
+{{- $record := dict "seq" $seq "title" $title "date" $date "source" $source "link" $link "tags" $tags "difficulty" $difficulty "status" $status "anchor" $anchor -}}
 {{- .Page.Scratch.Set "nowcoder_questions" ($questions | append $record) -}}
 
 <section
