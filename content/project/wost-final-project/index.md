@@ -144,6 +144,12 @@ This distinction matters physically and numerically. A Dirichlet random walk can
 
 *Fig 2a/2b merged.* Bunny (left) and Spot (right) Mixed Neumann RMSE vs walks. Bunny: WoSt tracks below Zombie initially but the gap narrows. Spot: the most striking case — Zombie continues to improve while WoSt plateaus, suggesting residual systematic error.
 
+### Spot Neumann 3D Scalar Field
+
+Open the interactive 3D viewer below to explore the Spot mixed Neumann scalar solution on a 16³ grid (128 walks per point). Drag to rotate, scroll to zoom, and use the panel to switch between scalar fields and adjust point size.
+
+**[🎮 Launch Spot Neumann 3D Viewer →](/files/wost-final-project/neumann_mixed_grid16_walk128_3d.html)**
+
 Bunny shows improvement with more walks, but the high-walk Neumann error does not drop as cleanly as the Dirichlet case. Spot is substantially harder: WoSt RMSE remains high even at larger walk counts.
 
 ### Why can Zombie outperform WoSt on Spot at high walk counts?
