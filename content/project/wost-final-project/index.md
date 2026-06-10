@@ -209,9 +209,5 @@ These supporting figures are retained for provenance and visual inspection, but 
 
 ## Full Materials
 
-The homepage keeps the main story compact. Complete experiment commands, raw outputs, convergence sweeps, epsilon sweeps, diagnostic runs, and generated tables are preserved in the project materials:
-
 - **[View Full Command Log](command_log.txt)**
 - **[View Data Appendix](data_tables_output.txt)**
-- Generated table scripts in `scripts/`
-- Interactive demos in `/files/wost-final-project/`
