@@ -505,3 +505,63 @@
   }
 </style>
 {{ end }}
+
+{{/* Equation-reference hover tooltips: CSS + enhancer (see static/js/eqref.js
+     and assets/js/mathjax-config.js). Load on the same condition as MathJax. */}}
+{{ if or .Params.math site.Params.math }}
+<style>
+  .eqref {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+    border-bottom: 1px dashed rgba(41, 98, 255, 0.45);
+  }
+
+  .eqref-tip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3000;
+    max-width: min(86vw, 640px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 12px;
+    box-shadow: 0 14px 38px rgba(15, 23, 42, 0.18);
+    color: rgba(15, 23, 42, 0.92);
+    font-size: 0.95em;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .eqref-tip mjx-container {
+    margin: 0 !important;
+  }
+
+  .eqref:hover .eqref-tip,
+  .eqref:focus .eqref-tip,
+  .eqref.is-open .eqref-tip {
+    display: block;
+  }
+
+  .eqref:focus {
+    outline: none;
+  }
+
+  .dark .eqref {
+    border-bottom-color: rgba(156, 195, 255, 0.5);
+  }
+
+  .dark .eqref-tip {
+    background: rgba(25, 27, 31, 0.98);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.9);
+  }
+</style>
+<script src="{{ "js/eqref.js" | relURL }}"></script>
+{{ end }}

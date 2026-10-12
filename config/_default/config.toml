@@ -26,6 +26,10 @@ theme = "academic"
 # Get last modified date for content from Git?
 enableGitInfo = false
 
+# 发布当天写的文章 date 常为"今天"，而 CI 在 UTC 时区构建——
+# 北京时间 08:00 前 push 会把当天（及更晚）日期的文章静默跳过。
+buildFuture = true
+
 # Default language to use (if you setup multilingual support)
 defaultContentLanguage = "en"
 hasCJKLanguage = false  # Set `true` for Chinese/Japanese/Korean languages.

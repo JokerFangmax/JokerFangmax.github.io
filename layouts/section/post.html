@@ -2,7 +2,12 @@
 
 {{ partial "page_header.html" . }}
 
-{{ $pages := .RegularPages.ByDate.Reverse }}
+{{- /* Topic subfolders (e.g. /post/dsa/) use their own .RegularPages; the /post/
+       root page collects posts from all nested topic folders. */ -}}
+{{- $pages := .RegularPages.ByDate.Reverse -}}
+{{- if eq .RelPermalink "/post/" -}}
+  {{- $pages = (where .Site.RegularPages "RelPermalink" "like" "^/post/").ByDate.Reverse -}}
+{{- end -}}
 {{ $groups := dict }}
 {{ $categoryNames := slice }}
 
