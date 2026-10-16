@@ -47,6 +47,9 @@
     {{ range $categoryNames }}
       {{ $name := . }}
       {{ $items := index $groups $name }}
+      {{ if eq $name "Forcing" }}
+        {{ $items = sort $items "Weight" "asc" }}
+      {{ end }}
       <section class="post-category-section" id="{{ anchorize $name }}">
         <div class="post-category-header">
           <div>

@@ -8,3 +8,5 @@ public/
 
 # Local docs
 REPO_STRUCTURE.md
+tmp/
+*.pyc
